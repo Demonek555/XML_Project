@@ -4,7 +4,7 @@ using System.Text;
 
 namespace bibModelBudka
 {
-    public static class DefaultFileNamers
+    public static class DefaultFileNames
     {
         public const string Authors = "plikAutorzyBudka.xml";
         public const string Publishers = "plikWydawnictwaBudka.xml";
