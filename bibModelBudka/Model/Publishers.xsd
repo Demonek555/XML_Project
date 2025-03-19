@@ -5,7 +5,7 @@
 			<xs:sequence>
 				<xs:element name="Wydawca" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute name="id" type="xs:unsignedByte" use="required" />
+						<xs:attribute name="id" type="xs:int" use="required" />
 						<xs:attribute name="nazwa" type="xs:string" use="required" />
 						<xs:attribute name="strona" type="xs:string" use="required" />
 					</xs:complexType>

@@ -6,10 +6,12 @@
 				<xs:element name="Ksiazka" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="id" type="xs:int" use="required" />
-						<xs:attribute name="IdAutora" type="xs:int" use="required" />
 						<xs:attribute name="tytul" type="xs:string" use="required" />
+						<xs:attribute name="IdAutora" type="xs:int" use="required" />
 						<xs:attribute name="rok_wydania" type="xs:unsignedShort" use="required" />
 						<xs:attribute name="IdWydawcy" type="xs:int" use="required" />
+						<xs:attribute name="ISBN" type="xs:unsignedLong" use="required" />
+						<xs:attribute name="cena" type="xs:decimal" use="required" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

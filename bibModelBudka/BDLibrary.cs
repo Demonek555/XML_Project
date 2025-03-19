@@ -21,7 +21,12 @@ namespace bibModelBudka
 
         public bool TestData()
         {
+            bool sukces = true;
             var authors = new bibModelBudka.Model.Autorzy();
+            var publishers = new bibModelBudka.Model.Wydawcy();
+            var books = new bibModelBudka.Model.Ksiazki();
+            if (!File.Exists(authorsFile))
+            {
             authors.Autor = new bibModelBudka.Model.AutorzyAutor[] {
             new bibModelBudka.Model.AutorzyAutor()
             {
@@ -87,11 +92,12 @@ namespace bibModelBudka
                 rokUr = 2000
             }
         };
-            bool sukces = SerializujDane(authors, authorsFile);
+            sukces = SerializujDane(authors, authorsFile);
             if (!sukces) return sukces;
-            //wydawnictwa - analogicznie do zrobienia
-            var publishers = new bibModelBudka.Model.Wydawcy();
-            publishers.Wydawca = new bibModelBudka.Model.WydawcyWydawca[]
+            }
+            if (!File.Exists(publishersFile))
+            {
+                publishers.Wydawca = new bibModelBudka.Model.WydawcyWydawca[]
             {
                 new bibModelBudka.Model.WydawcyWydawca()
                 {
@@ -126,9 +132,10 @@ namespace bibModelBudka
             };
             sukces = SerializujDane(publishers, publishersFile);
             if (!sukces) return sukces;
-            //książki - nowy też przerobić najlepiej
-            var books = new bibModelBudka.Model.Ksiazki();
-            books.Ksiazka = new bibModelBudka.Model.KsiazkiKsiazka[]
+        }
+            if (!File.Exists(booksFile))
+            {
+                books.Ksiazka = new bibModelBudka.Model.KsiazkiKsiazka[]
             {
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -136,7 +143,9 @@ namespace bibModelBudka
                     IdAutora=1,
                     tytul="Lalka",
                     rok_wydania=2000,
-                    IdWydawcy=1
+                    IdWydawcy=1,
+                    ISBN=1111111111111,
+                    cena=1.1m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -144,7 +153,9 @@ namespace bibModelBudka
                     IdAutora=3,
                     tytul="Wesele",
                     rok_wydania=2000,
-                    IdWydawcy=1
+                    IdWydawcy=1,
+                    ISBN=1111111111112,
+                    cena=1.2m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -152,7 +163,9 @@ namespace bibModelBudka
                     IdAutora=1,
                     tytul="Placówka",
                     rok_wydania=2000,
-                    IdWydawcy=1
+                    IdWydawcy=1,
+                    ISBN=1111111111113,
+                    cena=1.3m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -160,7 +173,9 @@ namespace bibModelBudka
                     IdAutora=4,
                     tytul="Inny świat",
                     rok_wydania=2000,
-                    IdWydawcy=1
+                    IdWydawcy=1,
+                    ISBN=1111111111114,
+                    cena=1.4m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -168,7 +183,9 @@ namespace bibModelBudka
                     IdAutora=5,
                     tytul="Powrót z gwiazd",
                     rok_wydania=2000,
-                    IdWydawcy=1
+                    IdWydawcy=1,
+                    ISBN=1111111111115,
+                    cena=1.5m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -176,7 +193,9 @@ namespace bibModelBudka
                     IdAutora=6,
                     tytul="Heban",
                     rok_wydania=2000,
-                    IdWydawcy=5
+                    IdWydawcy=5,
+                    ISBN=1111111111116,
+                    cena=1.6m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -184,7 +203,9 @@ namespace bibModelBudka
                     IdAutora=1,
                     tytul="Faraon",
                     rok_wydania=2000,
-                    IdWydawcy=4
+                    IdWydawcy=4,
+                    ISBN=1111111111117,
+                    cena=1.7m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -192,7 +213,9 @@ namespace bibModelBudka
                     IdAutora=6,
                     tytul="Ziemia obiecana",
                     rok_wydania=2000,
-                    IdWydawcy=3
+                    IdWydawcy=3,
+                    ISBN=1111111111118,
+                    cena=1.8m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -200,7 +223,9 @@ namespace bibModelBudka
                     IdAutora=7,
                     tytul="Ogniem i mieczem",
                     rok_wydania=2000,
-                    IdWydawcy=2
+                    IdWydawcy=2,
+                    ISBN=1111111111119,
+                    cena=1.9m
                 },
                 new bibModelBudka.Model.KsiazkiKsiazka()
                 {
@@ -208,11 +233,15 @@ namespace bibModelBudka
                     IdAutora=8,
                     tytul="Dzieła zebrane",
                     rok_wydania=2000,
-                    IdWydawcy=2
+                    IdWydawcy=2,
+                    ISBN=1111111111122,
+                    cena=2.2m
                 }
             };
+            
             sukces = SerializujDane(books, booksFile);
             if (!sukces) return sukces;
+            }
             /*
             var doc = new XDocument(
             new XDeclaration("1.0", "utf-8", "no"),

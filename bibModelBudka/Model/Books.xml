@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Ksiazki>
-	<Ksiazka id="1" IdAutora="1" tytul="Lalka" rok_wydania="2010" IdWydawcy="1"/>
+	<Ksiazka id="1" tytul="Lalka" IdAutora="1" rok_wydania="2010" IdWydawcy="1" ISBN="1111111111111" cena="1.1"/>
 </Ksiazki>
