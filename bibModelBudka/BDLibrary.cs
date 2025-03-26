@@ -286,5 +286,24 @@ namespace bibModelBudka
 
             return sukces;
         }
+
+        public string ReportData()
+        {
+            string wynik = XDocument.Load(authorsFile).ToString();
+            return wynik;
+        }
+        public Autorzy ReportData2()
+        {
+            try { 
+            var xs = new XmlSerializer(typeof(Autorzy));
+            var s = new StreamReader(authorsFile);
+            var authors = xs.Deserialize(s) as Autorzy;
+            return authors;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
     }
 }
