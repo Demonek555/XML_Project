@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace bibModelBudka
 {
@@ -304,6 +305,26 @@ namespace bibModelBudka
             {
                 throw (ex);
             }
+        }
+        public IOrderedEnumerable<AutorzyAutor> ReportDataLQ()
+        {
+            //try
+            //{
+                var xs = new XmlSerializer(typeof(Autorzy));
+                var s = new StreamReader(authorsFile);
+                var authors = xs.Deserialize(s) as Autorzy;
+
+            var sortLstAuthors = from item in authors.Autor
+                                 orderby item.nazwisko
+                                 select item;
+            //var lista = sortLstAuthors.ToList();
+            //var pierwszy = sortLstAuthors.FirstOrDefault();
+                return sortLstAuthors;
+           // }
+            //catch (Exception ex)
+            //{
+               // throw (ex);
+            //}
         }
     }
 }

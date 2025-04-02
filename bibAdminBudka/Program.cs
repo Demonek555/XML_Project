@@ -34,7 +34,19 @@ static void ShowData(bibModelBudka.BDLibrary db)
         Console.WriteLine(frm, item.id, item.nazwisko, item.imie, item.rokUr);
     }
     Console.WriteLine(kreska);
-
+    Console.WriteLine("\n=========WERSJA III==========\n");
+    var authorsSort = db.ReportDataLQ();
+    if (authorsSort != null)
+    {
+        Console.WriteLine(head + "\n" + kreska);
+        foreach (var item in authorsSort)
+        {
+            Console.WriteLine(frm, item.id, item.nazwisko, item.imie, item.rokUr);
+        }
+        Console.WriteLine(head + "\n" + kreska);
+    }
+    else Console.WriteLine("*** BRAK DANYCH ***");
+    Console.WriteLine(head + "\n" + kreska);
 }
 
 while (true)
@@ -42,7 +54,8 @@ while (true)
     Console.Clear();
     Console.WriteLine("Menu modułu bibAdminBudka\n");
     Console.WriteLine("W - wyświetl dane (wszystkie)");
-    Console.WriteLine("A - książki dla podanego autora");
+    Console.WriteLine("A - Dane autora");
+    Console.WriteLine("K - książki");
     Console.WriteLine("X - koniec\n");
     Console.Write("  Wybierz opcję: ");
 
@@ -55,7 +68,10 @@ while (true)
             ShowData(db);
             break;
         case ConsoleKey.A:
-            Console.WriteLine("\nWyświetlam książki autora.");
+            Console.WriteLine("\nWyświetlam dane autora.");
+            break;
+        case ConsoleKey.K:
+            Console.WriteLine("\nWyświetlam książki.");
             break;
         case ConsoleKey.X:
             Console.WriteLine("\nKoniec programu.");
