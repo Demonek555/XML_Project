@@ -288,11 +288,33 @@ namespace bibModelBudka
             return sukces;
         }
 
+
+
         public string ReportData()
         {
             string wynik = XDocument.Load(authorsFile).ToString();
             return wynik;
         }
+
+
+        //
+        public T ReportDataUniwersal<T>(string fileName) where T : class
+        {
+            try
+            {
+                var xs = new XmlSerializer(typeof(T));
+                using (var reader = new StreamReader(fileName))
+                {
+                    var data = xs.Deserialize(reader) as T;
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public Autorzy ReportData2()
         {
             try { 
@@ -306,10 +328,56 @@ namespace bibModelBudka
                 throw (ex);
             }
         }
+        public Wydawcy ReportData3()
+        {
+            try
+            {
+                var xs = new XmlSerializer(typeof(Wydawcy));
+                var s = new StreamReader(publishersFile);
+                var wydawcy = xs.Deserialize(s) as Wydawcy;
+                return wydawcy;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        public IOrderedEnumerable<TItem> ReportDataLQUniwersal<T, TItem, TKey>(string filePath, Func<TItem, TKey> orderBySelector)
+    where T : class, new()
+        {
+            try
+            {
+                var xs = new XmlSerializer(typeof(T));
+                using (var s = new StreamReader(filePath))
+                {
+                    var data = xs.Deserialize(s) as T;
+                    if (data == null)
+                        throw new InvalidOperationException("Błąd deserializacji.");
+
+                    var itemsProperty = typeof(T).GetProperties().FirstOrDefault(p => p.PropertyType.IsArray);
+                    if (itemsProperty == null)
+                        throw new InvalidOperationException("Nie znaleziono tablicy danych.");
+
+                    var items = itemsProperty.GetValue(data) as IEnumerable<TItem>;
+                    if (items == null)
+                        throw new InvalidOperationException("Nie udało się pobrać danych.");
+
+                    return items.OrderBy(orderBySelector);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Błąd: {ex.Message}");
+                throw;
+            }
+        }
+
+
         public IOrderedEnumerable<AutorzyAutor> ReportDataLQ()
         {
-            //try
-            //{
+            try
+            {
                 var xs = new XmlSerializer(typeof(Autorzy));
                 var s = new StreamReader(authorsFile);
                 var authors = xs.Deserialize(s) as Autorzy;
@@ -317,14 +385,78 @@ namespace bibModelBudka
             var sortLstAuthors = from item in authors.Autor
                                  orderby item.nazwisko
                                  select item;
-            //var lista = sortLstAuthors.ToList();
-            //var pierwszy = sortLstAuthors.FirstOrDefault();
                 return sortLstAuthors;
-           // }
-            //catch (Exception ex)
-            //{
-               // throw (ex);
-            //}
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        public List<KsiazkiKsiazkaExt> ReportDataLQ2()
+        {
+            try
+            {
+                // Wczytanie autorów i posortowanie wg nazwiska
+                var sortLstAuthors = ReportDataLQ();
+
+                // Wczytanie książek
+                var xsBooks = new XmlSerializer(typeof(Ksiazki));
+                var sBooks = new StreamReader(booksFile);
+                var books = xsBooks.Deserialize(sBooks) as Ksiazki;
+
+                if (books == null || books.Ksiazka == null || books.Ksiazka.Count() == 0)
+                    throw new Exception("Brak danych o książkach.");
+
+                // Wczytanie wydawnictw
+                var xsPub = new XmlSerializer(typeof(Wydawcy));
+                var sPub = new StreamReader(publishersFile);
+                var publishers = xsPub.Deserialize(sPub) as Wydawcy;
+
+                if (publishers == null || publishers.Wydawca == null || publishers.Wydawca.Count() == 0)
+                    throw new Exception("Brak danych o wydawnictwach.");
+
+                // Tworzenie zapytania LINQ
+                var sortLst = (
+                    from book in books.Ksiazka
+                    join author in sortLstAuthors on book.IdAutora equals author.id
+                    join pub in publishers.Wydawca on book.IdWydawcy equals pub.id
+                    orderby book.tytul
+                    select new KsiazkiKsiazkaExt()
+                    {
+                        id = book.id,
+                        tytul = book.tytul,
+                        NazwiskoImie = author.nazwisko + " " + author.imie,
+                        NazwaWydawnictwa = pub.nazwa,
+                        cena = book.cena
+                    }
+                ).ToList();
+
+                return sortLst;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        public IOrderedEnumerable<WydawcyWydawca> ReportDataLQ3()
+        {
+            try
+            {
+                var xs = new XmlSerializer(typeof(Wydawcy));
+                var s = new StreamReader(publishersFile);
+                var wydawcy = xs.Deserialize(s) as Wydawcy;
+
+                var sortLstPublishers = from item in wydawcy.Wydawca
+                                     orderby item.nazwa
+                                     select item;
+                return sortLstPublishers;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
         }
     }
 }
