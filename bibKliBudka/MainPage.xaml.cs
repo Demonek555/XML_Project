@@ -26,5 +26,29 @@ namespace bibKliBudka
         {
             this.InitializeComponent();
         }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new ContentDialog()
+            {
+                Title = "Wcisnąłeś buttona!",
+                Content = "I teraz zaczynam pracę...",
+                PrimaryButtonText = "OK",
+                SecondaryButtonText = "Cancel",
+            };
+            var result = await dlg.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                tbLewy.Text = "wybrano OK";
+                tbPrawy.Text = "====";
+                //wybrano ok
+            }
+            else
+            {
+                tbPrawy.Text = "wybrano Cancel";
+                tbLewy.Text = "****";
+                //wybrano cancel
+            }
+        }
     }
 }

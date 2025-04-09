@@ -6,9 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="Yellow">
 
     <Grid>
+        <Button Content="START" FontSize="100" Click="Button_Click"/>
+        <TextBlock Name="tbLewy" Text="****" FontSize="100" VerticalAlignment="Top"/>
+        <TextBlock Name="tbPrawy" Text="====" FontSize="100" HorizontalAlignment="Right"/>
+        <Rectangle Fill="Blue" Height="100" Width="200" Margin="20,40,0,0" HorizontalAlignment="right" />
+        <Rectangle Fill="Red" Width="200" Margin="0,545,365,285" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" />
 
     </Grid>
 </Page>
