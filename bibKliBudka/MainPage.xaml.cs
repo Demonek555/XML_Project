@@ -25,30 +25,77 @@ namespace bibKliBudka
         public MainPage()
         {
             this.InitializeComponent();
+
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void btStronaWWW_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var dlg = new ContentDialog()
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("http://ukw.edu.pl"));
+        }
+
+        //private void btUstawienia_Tapped(object sender, TappedRoutedEventArgs e)
+        //{
+        //    Frame.Navigate(typeof(SettingsPage));
+        //}
+
+        private void btPomoc_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PomocPage));
+
+        }
+
+        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            //powtórny wybór
+            var aktStrona = frmMain.CurrentSourcePageType;
+            
+            
+            if(args.IsSettingsInvoked == true)
             {
-                Title = "Wcisnąłeś buttona!",
-                Content = "I teraz zaczynam pracę...",
-                PrimaryButtonText = "OK",
-                SecondaryButtonText = "Cancel",
-            };
-            var result = await dlg.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                tbLewy.Text = "wybrano OK";
-                tbPrawy.Text = "====";
-                //wybrano ok
+                if (aktStrona == typeof(SettingsPage))
+                {
+                    return;
+                }
+                NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                frmMain.Navigate(typeof(SettingsPage));
+                //Frame.Navigate(typeof(SettingsPage));
             }
-            else
+            var wybrane = args.InvokedItemContainer.Name;
+            switch (wybrane)
             {
-                tbPrawy.Text = "wybrano Cancel";
-                tbLewy.Text = "****";
-                //wybrano cancel
+                case "AuthorListMenuItem":
+                    //if (aktStrona == typeof(AuthorPage))
+                    //{
+                    //    return;
+                    //}
+                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                    //frmMain.Navigate(typeof(AuthorPage));
+                    break;
+                case "PublisherListMenuItem":
+                    //if (aktStrona == typeof(PublisherPage))
+                    //{
+                    //    return;
+                    //}
+                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                    //frmMain.Navigate(typeof(PublisherPage));
+                    break;
+                case "BookListMenuItem":
+                    //if (aktStrona == typeof(BookPage))
+                    //{
+                    //    return;
+                    //}
+                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                    //frmMain.Navigate(typeof(BookPage));
+                    break;
+                default:
+                break;   
             }
+        }
+
+        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+
+                frmMain.GoBack();
         }
     }
 }

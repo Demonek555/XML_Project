@@ -8,12 +8,27 @@
     mc:Ignorable="d"
     Background="Yellow">
 
-    <Grid>
-        <Button Content="START" FontSize="100" Click="Button_Click"/>
-        <TextBlock Name="tbLewy" Text="****" FontSize="100" VerticalAlignment="Top"/>
-        <TextBlock Name="tbPrawy" Text="====" FontSize="100" HorizontalAlignment="Right"/>
-        <Rectangle Fill="Blue" Height="100" Width="200" Margin="20,40,0,0" HorizontalAlignment="right" />
-        <Rectangle Fill="Red" Width="200" Margin="0,545,365,285" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" />
-
+    
+    <Grid >
+        <NavigationView IsBackEnabled="{x:Bind frmMain.CanGoBack, Mode=OneWay}" BackRequested="NavView_BackRequested" Name="NavView" OpenPaneLength="200" ItemInvoked="NavView_ItemInvoked" Header="wybrano: ">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Name="AuthorListMenuItem" Icon="People" Content="Autorzy" />
+                <NavigationViewItem Name="PublisherListMenuItem" Icon="Copy" Content="Wydawcy"/>
+                <NavigationViewItem Name="BookListMenuItem" Icon="Library" Content="Książki"/>
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <StackPanel>
+                    <NavigationViewItem Name="WWWpage" Icon="World" Content="Strona WWW" Tapped="btStronaWWW_Tapped"/>
+                <NavigationViewItem Name="HelpPage" Icon="Help" Content="Pomoc" Tapped="btPomoc_Tapped"/>
+                </StackPanel>
+            </NavigationView.PaneFooter>
+            <Frame Name="frmMain" Margin="20,0,0,0"/>
+        </NavigationView>
+        <!--<StackPanel VerticalAlignment="Top" >
+            <Button Content="Autorzy" />
+            <Button Content="POMOC" Name="btPomoc" Tapped="btPomoc_Tapped"/>
+        <Button Content="Strona WWW" Name="btStronaWWW" Tapped="btStronaWWW_Tapped" />
+        <Button Content="Ustawienia" Name="btUstawienia" Tapped="btUstawienia_Tapped"/>--> 
+        <!--</StackPanel>-->
     </Grid>
 </Page>
