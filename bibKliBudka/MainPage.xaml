@@ -15,11 +15,12 @@
                 <NavigationViewItem Name="AuthorListMenuItem" Icon="People" Content="Autorzy" />
                 <NavigationViewItem Name="PublisherListMenuItem" Icon="Copy" Content="Wydawcy"/>
                 <NavigationViewItem Name="BookListMenuItem" Icon="Library" Content="Książki"/>
+                <NavigationViewItem Name="HelpMenuItem" Icon="Help" Content="Pomoc" Tapped="btPomoc_Tapped"/>
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <StackPanel>
-                    <NavigationViewItem Name="WWWpage" Icon="World" Content="Strona WWW" Tapped="btStronaWWW_Tapped"/>
-                <NavigationViewItem Name="HelpPage" Icon="Help" Content="Pomoc" Tapped="btPomoc_Tapped"/>
+                <NavigationViewItem Name="WWWpage" Icon="World" Content="Strona WWW" Tapped="btStronaWWW_Tapped"/>
+                
                 </StackPanel>
             </NavigationView.PaneFooter>
             <Frame Name="frmMain" Margin="20,0,0,0"/>

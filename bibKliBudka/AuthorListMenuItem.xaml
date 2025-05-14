@@ -1,18 +1,16 @@
 ﻿<Page
-    x:Class="bibKliBudka.PomocPage"
+    x:Class="bibKliBudka.AuthorListMenuItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:bibKliBudka"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="White">
+    Background="white">
 
     <Grid>
-        <StackPanel>
-            <TextBlock Text="POMOC" Foreground="Black" Style="{ThemeResource HeaderTextBlockStyle}"/>
-        <TextBlock Text="Program Biblioteka" Foreground="Black"/>
+        <StackPanel Margin="15">
+            <TextBlock Text="AUTORZY" Style="{ThemeResource HeaderTextBlockStyle}"/>
         </StackPanel>
-        <Button Content="Powrót" VerticalAlignment="Bottom" Click="Button_Click" Foreground="Black"/>
     </Grid>
 </Page>

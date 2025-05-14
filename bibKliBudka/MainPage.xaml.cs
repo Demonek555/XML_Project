@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,26 +18,24 @@ using Windows.UI.Xaml.Navigation;
 
 namespace bibKliBudka
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public MainPage()
         {
             this.InitializeComponent();
-
+            if (ApplicationData.Current.LocalSettings.Values["tryb"] != null)
+            {
+                if (Window.Current.Content is FrameworkElement rootElement)
+                {
+                    rootElement.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["tryb"];
+                }
+            }
         }
 
         private async void btStronaWWW_Tapped(object sender, TappedRoutedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(new Uri("http://ukw.edu.pl"));
         }
-
-        //private void btUstawienia_Tapped(object sender, TappedRoutedEventArgs e)
-        //{
-        //    Frame.Navigate(typeof(SettingsPage));
-        //}
 
         private void btPomoc_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -46,55 +45,48 @@ namespace bibKliBudka
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            //powtórny wybór
             var aktStrona = frmMain.CurrentSourcePageType;
-            
-            
+            Type docStrona = null;
             if(args.IsSettingsInvoked == true)
             {
-                if (aktStrona == typeof(SettingsPage))
-                {
-                    return;
-                }
-                NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
-                frmMain.Navigate(typeof(SettingsPage));
-                //Frame.Navigate(typeof(SettingsPage));
+
+                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                    docStrona = typeof(SettingsPage);
+                   
             }
             var wybrane = args.InvokedItemContainer.Name;
             switch (wybrane)
             {
                 case "AuthorListMenuItem":
-                    //if (aktStrona == typeof(AuthorPage))
-                    //{
-                    //    return;
-                    //}
+
                     NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
-                    //frmMain.Navigate(typeof(AuthorPage));
+                    docStrona = typeof(AuthorListMenuItem);
                     break;
                 case "PublisherListMenuItem":
-                    //if (aktStrona == typeof(PublisherPage))
-                    //{
-                    //    return;
-                    //}
+
                     NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
-                    //frmMain.Navigate(typeof(PublisherPage));
+                    docStrona = typeof(PublisherListMenuItem);
                     break;
                 case "BookListMenuItem":
-                    //if (aktStrona == typeof(BookPage))
-                    //{
-                    //    return;
-                    //}
+
                     NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
-                    //frmMain.Navigate(typeof(BookPage));
+                    docStrona = typeof(BookListMenuItem);
+                    break;
+                case "HelpMenuItem":
+                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                    docStrona = typeof(PomocPage);
                     break;
                 default:
                 break;   
+            }
+            if (docStrona!=null && docStrona!=aktStrona)
+            {
+                frmMain.Navigate(docStrona);
             }
         }
 
         private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
-
                 frmMain.GoBack();
         }
     }

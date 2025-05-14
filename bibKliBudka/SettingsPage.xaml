@@ -7,14 +7,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="LightBlue">
+    <Page.Resources>
+        <Style TargetType="RadioButton" >
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="Background" Value="Yellow"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
         <StackPanel Margin="15">
             <TextBlock Text="USTAWIENIA" Style="{ThemeResource HeaderTextBlockStyle}"/>
             <TextBlock Text="Tryb jasny/ciemny" Style="{ThemeResource TitleTextBlockStyle}"/>
-            <RadioButton Content="Tryb jasny" IsChecked="True"/>
-            <RadioButton Content="Tryb ciemny" />
-            <RadioButton Content="Tryb systemowy"/>
+            <RadioButton Name="LightRadioButton" Content="Tryb jasny" Checked="RadioButton_Checked"/>
+            <RadioButton Name="DarkRadioButton" Content="Tryb ciemny" Checked="RadioButton_Checked_1"/>
+            <RadioButton Name="DefaultRadioButton" Content="Tryb systemowy"  Checked="RadioButton_Checked_2"/>
         </StackPanel>
         
     </Grid>
