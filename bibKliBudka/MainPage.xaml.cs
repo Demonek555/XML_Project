@@ -30,6 +30,10 @@ namespace bibKliBudka
                     rootElement.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["tryb"];
                 }
             }
+            
+            //test danych
+            (App.Current as App).db.TestData();
+            
         }
 
         private async void btStronaWWW_Tapped(object sender, TappedRoutedEventArgs e)
