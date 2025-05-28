@@ -24,6 +24,7 @@ namespace bibKliBudka
     {
         public List<AutorzyAutor> Autorzy=new List<AutorzyAutor>();
     }
+    
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -32,36 +33,21 @@ namespace bibKliBudka
     public sealed partial class AuthorListMenuItem : Page
     {
         DataGridDataSourceAuthors AuthorsViewModel;
+        BDLibraryUWP dbUWP;
         public AuthorListMenuItem()
         {
-            AuthorsViewModel= new DataGridDataSourceAuthors()
+            dbUWP = (App.Current as App).db;
+            AuthorsViewModel = new DataGridDataSourceAuthors()
             {
-                Autorzy = new List<AutorzyAutor>()
-                {
-                    new AutorzyAutor()
-                    {
-                        id=1,
-                        nazwisko="Kowalski",
-                        imie="Jan",
-                        rokUr=1980
-                    },
-                    new AutorzyAutor()
-                    {
-                        id=2,
-                        nazwisko="Nowak",
-                        imie="Anna",
-                        rokUr=1990
-                    },
-                     new AutorzyAutor()
-                    {
-                        id=3,
-                        nazwisko="Kowalski",
-                        imie="Jan3",
-                        rokUr=1990
-                    },
-                }
+                Autorzy = dbUWP.AuthorsLst
             };
             this.InitializeComponent();
+        }
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            var x=AuthorsViewModel.Autorzy;
+            dbUWP.Save();
+            base.OnNavigatingFrom(e);
         }
     }
 }
