@@ -12,6 +12,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using bibModelBudka.Model;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -20,11 +24,117 @@ namespace bibKliBudka
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    class DataGridDataSourceBooks
+    {
+        public ObservableCollection<KsiazkiKsiazkaExt> BooksObservable { get; set; }
+    }
+
     public sealed partial class BookListMenuItem : Page
     {
+        BDLibraryUWP dbUWP;
+        DataGridDataSourceBooks BooksViewModel;
         public BookListMenuItem()
         {
             this.InitializeComponent();
+            dbUWP = (App.Current as App).db;
+
+            var rozszerzone = (dbUWP.BooksLst ?? new List<KsiazkiKsiazka>()).Select(b => new KsiazkiKsiazkaExt
+            {
+                id = b.id,
+                IdAutora = b.IdAutora,
+                IdWydawcy = b.IdWydawcy,
+                ISBN = b.ISBN,
+                tytul = b.tytul,
+                rok_wydania = b.rok_wydania,
+                NazwiskoImie = dbUWP.AuthorsLst.FirstOrDefault(a => a.id == b.IdAutora)?.nazwisko + " " +
+                               dbUWP.AuthorsLst.FirstOrDefault(a => a.id == b.IdAutora)?.imie,
+                NazwaWydawnictwa = dbUWP.PublishersLst.FirstOrDefault(p => p.id == b.IdWydawcy)?.nazwa
+            }).ToList();
+
+            BooksViewModel = new DataGridDataSourceBooks()
+            {
+                BooksObservable = new ObservableCollection<KsiazkiKsiazkaExt>(rozszerzone)
+            };
         }
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            dbUWP.BooksLst = BooksViewModel.BooksObservable
+                .Select(b =>
+                {
+                    var autor = dbUWP.AuthorsLst.FirstOrDefault(a =>
+                        $"{a.nazwisko} {a.imie}".ToUpperInvariant() == (b.NazwiskoImie ?? "").Trim().ToUpperInvariant());
+
+                    var wydawnictwo = dbUWP.PublishersLst.FirstOrDefault(w =>
+                        w.nazwa.ToUpperInvariant() == (b.NazwaWydawnictwa ?? "").Trim().ToUpperInvariant());
+
+                    return new KsiazkiKsiazka
+                    {
+                        id = b.id,
+                        tytul = b.tytul,
+                        ISBN = b.ISBN,
+                        rok_wydania = b.rok_wydania,
+                        IdAutora = autor?.id ?? 0,
+                        IdWydawcy = wydawnictwo?.id ?? 0
+                    };
+                }).ToList();
+
+            dbUWP.SaveBooks();
+            base.OnNavigatingFrom(e);
+        }
+
+
+
+        private async void DodajKsiazke_Click(object sender, RoutedEventArgs e)
+        {
+            if (dbUWP.AuthorsLst.Count == 0 || dbUWP.PublishersLst.Count == 0)
+            {
+                await new ContentDialog
+                {
+                    Title = "Brak danych",
+                    Content = "Nie można dodać książki — brak autorów lub wydawnictw.",
+                    CloseButtonText = "OK"
+                }.ShowAsync();
+                return;
+            }
+
+            int nextId = BooksViewModel.BooksObservable.Count > 0
+                ? BooksViewModel.BooksObservable.Max(b => b.id) + 1
+                : 1;
+
+            var nowa = new KsiazkiKsiazkaExt
+            {
+                id = nextId,
+                IdAutora = dbUWP.AuthorsLst.First().id,
+                IdWydawcy = dbUWP.PublishersLst.First().id,
+                ISBN = 0,
+                tytul = "Nowa książka",
+                rok_wydania = (ushort)DateTime.Now.Year,
+                NazwiskoImie = "",
+                NazwaWydawnictwa = ""
+            };
+
+            BooksViewModel.BooksObservable.Insert(0, nowa);
+        }
+
+
+        private async void UsunKsiazke_Click(object sender, RoutedEventArgs e)
+        {
+            int indeks = dataGrid.SelectedIndex;
+            if (indeks >= 0 && indeks < BooksViewModel.BooksObservable.Count)
+            {
+                BooksViewModel.BooksObservable.RemoveAt(indeks);
+            }
+            else
+            {
+                await new ContentDialog
+                {
+                    Title = "Błąd",
+                    Content = "Zaznacz książkę do usunięcia.",
+                    CloseButtonText = "OK"
+                }.ShowAsync();
+            }
+        }
+
+
     }
 }

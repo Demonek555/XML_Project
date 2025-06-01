@@ -12,10 +12,12 @@
     <Grid >
         <NavigationView IsBackEnabled="{x:Bind frmMain.CanGoBack, Mode=OneWay}" BackRequested="NavView_BackRequested" Name="NavView" OpenPaneLength="200" ItemInvoked="NavView_ItemInvoked" Header="wybrano: ">
             <NavigationView.MenuItems>
+                
                 <NavigationViewItem Name="AuthorListMenuItem" Icon="People" Content="Autorzy" />
                 <NavigationViewItem Name="PublisherListMenuItem" Icon="Copy" Content="Wydawcy"/>
                 <NavigationViewItem Name="BookListMenuItem" Icon="Library" Content="Książki"/>
                 <NavigationViewItem Name="HelpMenuItem" Icon="Help" Content="Pomoc" Tapped="btPomoc_Tapped"/>
+                <NavigationViewItem Name="ExitMenuItem" Content="Wyjdź" Icon="Cancel" />
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <StackPanel>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -47,7 +48,7 @@ namespace bibKliBudka
 
         }
 
-        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private async void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             var aktStrona = frmMain.CurrentSourcePageType;
             Type docStrona = null;
@@ -80,6 +81,27 @@ namespace bibKliBudka
                     NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
                     docStrona = typeof(PomocPage);
                     break;
+                case "ExitMenuItem":
+                    var dialog = new ContentDialog()
+                    {
+                        Title = "Zamykanie programu",
+                        Content = "Czy na pewno chcesz wyjść z programu?\nZmiany zostaną zapisane.",
+                        PrimaryButtonText = "Tak",
+                        CloseButtonText = "Nie"
+                    };
+
+                    var result = await dialog.ShowAsync();
+
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        // 🔁 Wymusza OnNavigatingFrom dla aktualnej strony (autorzy / książki / wydawnictwa)
+                        frmMain.Navigate(typeof(MainPage));
+
+                        await Task.Delay(100); // dajemy czas, by OnNavigatingFrom się wykonał
+                        App.Current.Exit();
+                    }
+                    return;
+
                 default:
                 break;   
             }

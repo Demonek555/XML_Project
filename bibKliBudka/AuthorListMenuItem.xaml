@@ -12,8 +12,10 @@
     <Grid>
         <StackPanel Margin="15">
             <TextBlock Text="AUTORZY" Style="{ThemeResource HeaderTextBlockStyle}"/>
-            <tollKit:DataGrid Name="dataGrid" Margin="15" ItemsSource="{x:Bind AuthorsViewModel.Autorzy}"/>
+            <Button Content="NOWY" Click="DodajAutora_Click" Margin="10"/>
+            <Button Content="USUŃ" Click="UsunAutora_Click" Margin="10"/>
+            <tollKit:DataGrid Name="dataGrid" Margin="15" ItemsSource="{x:Bind AuthorsViewModel.AutorzyObservable, Mode=OneWay}"/>
         </StackPanel>
-        
+
     </Grid>
 </Page>

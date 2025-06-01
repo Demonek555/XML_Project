@@ -3,12 +3,29 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:bibKliBudka"
+   xmlns:tollKit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+    <StackPanel Margin="15">
+        <TextBlock Text="KSIĄŻKI" Style="{ThemeResource HeaderTextBlockStyle}"/>
+        <Button Content="NOWY" Click="DodajKsiazke_Click" Margin="10"/>
+        <Button Content="USUŃ" Click="UsunKsiazke_Click" Margin="10"/>
+        <tollKit:DataGrid Name="dataGrid"
+    Margin="15"
+    AutoGenerateColumns="False"
+    ItemsSource="{x:Bind BooksViewModel.BooksObservable, Mode=OneWay}">
+            <tollKit:DataGrid.Columns>
+                <tollKit:DataGridTextColumn Header="ID" Binding="{Binding id}" />
+                <tollKit:DataGridTextColumn Header="Tytuł" Binding="{Binding tytul}" />
+                <tollKit:DataGridTextColumn Header="Autor" Binding="{Binding NazwiskoImie}" />
+                <tollKit:DataGridTextColumn Header="Wydawnictwo" Binding="{Binding NazwaWydawnictwa}" />
+                <tollKit:DataGridTextColumn Header="Rok wydania" Binding="{Binding rok_wydania}" />
+                <tollKit:DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" />
+            </tollKit:DataGrid.Columns>
+        </tollKit:DataGrid>
+        
+    </StackPanel>
 </Page>
