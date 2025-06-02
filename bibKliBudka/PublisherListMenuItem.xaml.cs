@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using bibModelBudka.Model;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -84,6 +85,48 @@ namespace bibKliBudka
                 }.ShowAsync();
             }
         }
+        public async Task<bool> CzyDanePoprawne()
+        {
+            var komunikaty = new List<string>();
+
+            foreach (var wyd in PublishersViewModel.PublishersObservable)
+            {
+                var blad = $"ID {wyd.id}:";
+                bool maBlad = false;
+
+                if (string.IsNullOrWhiteSpace(wyd.nazwa))
+                {
+                    blad += " brak nazwy";
+                    maBlad = true;
+                }
+
+                if (string.IsNullOrWhiteSpace(wyd.strona) || !Uri.IsWellFormedUriString(wyd.strona, UriKind.Absolute))
+                {
+                    blad += (maBlad ? "," : "") + " niepoprawny adres strony";
+                    maBlad = true;
+                }
+
+                if (maBlad)
+                {
+                    komunikaty.Add(blad);
+                }
+            }
+
+            if (komunikaty.Any())
+            {
+                await new ContentDialog
+                {
+                    Title = "Błąd walidacji danych wydawnictw",
+                    Content = string.Join("\n", komunikaty),
+                    CloseButtonText = "OK"
+                }.ShowAsync();
+
+                return false;
+            }
+
+            return true;
+        }
+
 
 
 

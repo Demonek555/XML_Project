@@ -31,10 +31,8 @@ namespace bibKliBudka
                     rootElement.RequestedTheme = (ElementTheme)ApplicationData.Current.LocalSettings.Values["tryb"];
                 }
             }
-            
-            //test danych
             (App.Current as App).db.TestData();
-            
+
         }
 
         private async void btStronaWWW_Tapped(object sender, TappedRoutedEventArgs e)
@@ -44,20 +42,22 @@ namespace bibKliBudka
 
         private void btPomoc_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
             Frame.Navigate(typeof(PomocPage));
 
         }
+
 
         private async void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             var aktStrona = frmMain.CurrentSourcePageType;
             Type docStrona = null;
-            if(args.IsSettingsInvoked == true)
+            if (args.IsSettingsInvoked == true)
             {
 
-                    NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
-                    docStrona = typeof(SettingsPage);
-                   
+                NavView.Header = "wybrano: " + args.InvokedItemContainer.Name;
+                docStrona = typeof(SettingsPage);
+
             }
             var wybrane = args.InvokedItemContainer.Name;
             switch (wybrane)
@@ -94,26 +94,59 @@ namespace bibKliBudka
 
                     if (result == ContentDialogResult.Primary)
                     {
-                        // 🔁 Wymusza OnNavigatingFrom dla aktualnej strony (autorzy / książki / wydawnictwa)
                         frmMain.Navigate(typeof(MainPage));
 
-                        await Task.Delay(100); // dajemy czas, by OnNavigatingFrom się wykonał
+                        await Task.Delay(100); 
                         App.Current.Exit();
                     }
                     return;
 
                 default:
-                break;   
+                    break;
             }
-            if (docStrona!=null && docStrona!=aktStrona)
+            if (docStrona != null && docStrona != aktStrona)
             {
+                if (docStrona != null && docStrona != aktStrona)
+                {
+                    var currentPage = frmMain.Content;
+
+                    if (currentPage is AuthorListMenuItem authorPage && !await authorPage.CzyDanePoprawne())
+                    {
+                        ResetujZaznaczenieMenu();
+                        return;
+                    }
+
+                    if (currentPage is PublisherListMenuItem publisherPage && !await publisherPage.CzyDanePoprawne())
+                    {
+                        ResetujZaznaczenieMenu();
+                        return;
+                    }
+
+                    if (currentPage is BookListMenuItem bookPage && !await bookPage.CzyDanePoprawne())
+                    {
+                        ResetujZaznaczenieMenu();
+                        return;
+                    }
+
+
+
+                    frmMain.Navigate(docStrona);
+                }
+
                 frmMain.Navigate(docStrona);
             }
+        }
+        private void ResetujZaznaczenieMenu()
+        {
+            var currentPageName = frmMain.CurrentSourcePageType.Name;
+            NavView.SelectedItem = NavView.MenuItems
+                .OfType<NavigationViewItem>()
+                .FirstOrDefault(item => currentPageName.StartsWith(item.Name));
         }
 
         private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
-                frmMain.GoBack();
+            frmMain.GoBack();
         }
     }
 }

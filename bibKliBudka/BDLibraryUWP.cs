@@ -18,7 +18,6 @@ namespace bibKliBudka
     {
         readonly string authorsFile, publishersFile, booksFile;
         readonly StorageFolder pathUWP;
-        //dane odczytane z plików
         public List<AutorzyAutor> AuthorsLst;
         public List<WydawcyWydawca> PublishersLst;
         public List<KsiazkiKsiazka> BooksLst;
@@ -50,7 +49,6 @@ namespace bibKliBudka
 
         public async void TestData()
         {
-            //bool jestOK = false;
             string kom = "";
             var itemAF = await pathUWP.TryGetItemAsync(authorsFile);
             if (itemAF == null)
@@ -115,7 +113,6 @@ namespace bibKliBudka
             }
             if (kom != "")
             {
-                //problem z danymi
                 var dlg = new ContentDialog()
                 {
                     Title = "Problem z plikami danych",
@@ -126,7 +123,6 @@ namespace bibKliBudka
                 App.Current.Exit();
                 return;
             }
-            //są pliki z danymi
             try
             {
                 var deserializedAuthors = Deserialize<Autorzy>(itemAF as StorageFile);
@@ -162,30 +158,6 @@ namespace bibKliBudka
 
         }
 
-        //async void Serializuj()
-        //{
-        //    var aut=new Autorzy() { Autor = AuthorsLst.ToArray() };
-        //    var xs = new XmlSerializer(typeof(Autorzy));
-        //    StorageFile nowy=await pathUWP.CreateFileAsync(authorsFile, CreationCollisionOption.ReplaceExisting);
-        //    try
-        //    {
-        //        using (Stream writer = await nowy.OpenStreamForWriteAsync())
-        //        {
-        //            xs.Serialize(writer, aut);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //komunikat o błędzie
-        //        var dlg = new ContentDialog()
-        //        {
-        //            Title = ex.Message,
-        //            Content = ex,
-        //            CloseButtonText = "OK"
-        //        };
-        //        await dlg.ShowAsync();
-        //    }
-        //}
         private async void Serializuj<T>(T obj, string fileName)
         {
             var xs = new XmlSerializer(typeof(T));
@@ -209,15 +181,7 @@ namespace bibKliBudka
             }
         }
 
-        //internal void Save()
-        //{
-        //    Serializuj();
-        //    //throw new NotImplementedException();
-        //}
-        public async void Save<TContainer, TBase>(
-    List<TBase> dataList,
-    string fileName,
-    Func<TBase[], TContainer> containerFactory)
+        public async void Save<TContainer, TBase>(List<TBase> dataList, string fileName, Func<TBase[], TContainer> containerFactory)
         {
             var xs = new XmlSerializer(typeof(TContainer));
             try

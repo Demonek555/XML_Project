@@ -9,15 +9,15 @@ using System.Linq;
 
 namespace bibModelBudka
 {
-    
+
     public class BDLibrary
     {
         public readonly string authorsFile, publishersFile, booksFile;
-        public BDLibrary(string path, string authorsFile=DefaultFileNames.Authors, string publishersFile = DefaultFileNames.Publishers, string booksFile = DefaultFileNames.Books)
+        public BDLibrary(string path, string authorsFile = DefaultFileNames.Authors, string publishersFile = DefaultFileNames.Publishers, string booksFile = DefaultFileNames.Books)
         {
-            this.authorsFile = path+authorsFile;
-            this.publishersFile = path+publishersFile;
-            this.booksFile = path+booksFile;
+            this.authorsFile = path + authorsFile;
+            this.publishersFile = path + publishersFile;
+            this.booksFile = path + booksFile;
         }
 
         public bool TestData()
@@ -28,7 +28,7 @@ namespace bibModelBudka
             var books = new bibModelBudka.Model.Ksiazki();
             if (!File.Exists(authorsFile))
             {
-            authors.Autor = new bibModelBudka.Model.AutorzyAutor[] {
+                authors.Autor = new bibModelBudka.Model.AutorzyAutor[] {
             new bibModelBudka.Model.AutorzyAutor()
             {
                 id = 1,
@@ -66,35 +66,35 @@ namespace bibModelBudka
             },
             new bibModelBudka.Model.AutorzyAutor()
             {
-                id = 5,
+                id = 6,
                 nazwisko = "Kapuściński",
                 imie = "Ryszard",
                 rokUr = 1789
             },
             new bibModelBudka.Model.AutorzyAutor()
             {
-                id = 6,
+                id = 7,
                 nazwisko = "Stanisław Reymont",
                 imie = "Władysław",
                 rokUr = 1789
             },
             new bibModelBudka.Model.AutorzyAutor()
             {
-                id = 7,
+                id = 8,
                 nazwisko = "Sienkiewicz",
                 imie = "Henryk",
                 rokUr = 1789
             },
             new bibModelBudka.Model.AutorzyAutor()
             {
-                id = 8,
+                id = 9,
                 nazwisko = "Budka",
                 imie = "Bartosz",
                 rokUr = 2000
             }
         };
-            sukces = SerializujDane(authors, authorsFile);
-            if (!sukces) return sukces;
+                sukces = SerializujDane(authors, authorsFile);
+                if (!sukces) return sukces;
             }
             if (!File.Exists(publishersFile))
             {
@@ -131,9 +131,9 @@ namespace bibModelBudka
                     strona="https://fabrykaslow.com.pl/"
                 }
             };
-            sukces = SerializujDane(publishers, publishersFile);
-            if (!sukces) return sukces;
-        }
+                sukces = SerializujDane(publishers, publishersFile);
+                if (!sukces) return sukces;
+            }
             if (!File.Exists(booksFile))
             {
                 books.Ksiazka = new bibModelBudka.Model.KsiazkiKsiazka[]
@@ -239,27 +239,10 @@ namespace bibModelBudka
                     cena=2.2m
                 }
             };
-            
-            sukces = SerializujDane(books, booksFile);
-            if (!sukces) return sukces;
+
+                sukces = SerializujDane(books, booksFile);
+                if (!sukces) return sukces;
             }
-            /*
-            var doc = new XDocument(
-            new XDeclaration("1.0", "utf-8", "no"),
-            new XComment("Przykładowe dane-książki.xml"),
-            new XElement("Ksiazki",
-                new XAttribute("wersja", "2.0"),
-                new XElement("Ksiazka",
-                    new XAttribute("id", "1"),
-                    new XAttribute("IdAutora", "1"),
-                    new XAttribute("tytul", "Lalka"),
-                    new XAttribute("rok_wydania", "2010"),
-                    new XAttribute("IdWydawcy", "1")
-                    )
-                )
-            );
-            doc.Save(booksFile);
-            */
 
 
             return sukces;
@@ -267,7 +250,7 @@ namespace bibModelBudka
 
         private bool SerializujDane<T>(T data, string fileName)
         {
-            //zapis do pliku  - serializacja
+
             var xs = new XmlSerializer(typeof(T));
             bool sukces = false;
             try
@@ -297,7 +280,6 @@ namespace bibModelBudka
         }
 
 
-        //
         public T ReportDataUniwersal<T>(string fileName) where T : class
         {
             try
@@ -317,11 +299,12 @@ namespace bibModelBudka
 
         public Autorzy ReportData2()
         {
-            try { 
-            var xs = new XmlSerializer(typeof(Autorzy));
-            var s = new StreamReader(authorsFile);
-            var authors = xs.Deserialize(s) as Autorzy;
-            return authors;
+            try
+            {
+                var xs = new XmlSerializer(typeof(Autorzy));
+                var s = new StreamReader(authorsFile);
+                var authors = xs.Deserialize(s) as Autorzy;
+                return authors;
             }
             catch (Exception ex)
             {
@@ -382,9 +365,9 @@ namespace bibModelBudka
                 var s = new StreamReader(authorsFile);
                 var authors = xs.Deserialize(s) as Autorzy;
 
-            var sortLstAuthors = from item in authors.Autor
-                                 orderby item.nazwisko
-                                 select item;
+                var sortLstAuthors = from item in authors.Autor
+                                     orderby item.nazwisko
+                                     select item;
                 return sortLstAuthors;
             }
             catch (Exception ex)
@@ -397,10 +380,8 @@ namespace bibModelBudka
         {
             try
             {
-                // Wczytanie autorów i posortowanie wg nazwiska
                 var sortLstAuthors = ReportDataLQ();
 
-                // Wczytanie książek
                 var xsBooks = new XmlSerializer(typeof(Ksiazki));
                 var sBooks = new StreamReader(booksFile);
                 var books = xsBooks.Deserialize(sBooks) as Ksiazki;
@@ -408,7 +389,6 @@ namespace bibModelBudka
                 if (books == null || books.Ksiazka == null || books.Ksiazka.Count() == 0)
                     throw new Exception("Brak danych o książkach.");
 
-                // Wczytanie wydawnictw
                 var xsPub = new XmlSerializer(typeof(Wydawcy));
                 var sPub = new StreamReader(publishersFile);
                 var publishers = xsPub.Deserialize(sPub) as Wydawcy;
@@ -416,7 +396,6 @@ namespace bibModelBudka
                 if (publishers == null || publishers.Wydawca == null || publishers.Wydawca.Count() == 0)
                     throw new Exception("Brak danych o wydawnictwach.");
 
-                // Tworzenie zapytania LINQ
                 var sortLst = (
                     from book in books.Ksiazka
                     join author in sortLstAuthors on book.IdAutora equals author.id
@@ -449,8 +428,8 @@ namespace bibModelBudka
                 var wydawcy = xs.Deserialize(s) as Wydawcy;
 
                 var sortLstPublishers = from item in wydawcy.Wydawca
-                                     orderby item.nazwa
-                                     select item;
+                                        orderby item.nazwa
+                                        select item;
                 return sortLstPublishers;
             }
             catch (Exception ex)

@@ -8,30 +8,24 @@
     mc:Ignorable="d"
     Background="Yellow">
 
-    
+
     <Grid >
         <NavigationView IsBackEnabled="{x:Bind frmMain.CanGoBack, Mode=OneWay}" BackRequested="NavView_BackRequested" Name="NavView" OpenPaneLength="200" ItemInvoked="NavView_ItemInvoked" Header="wybrano: ">
             <NavigationView.MenuItems>
-                
+
                 <NavigationViewItem Name="AuthorListMenuItem" Icon="People" Content="Autorzy" />
                 <NavigationViewItem Name="PublisherListMenuItem" Icon="Copy" Content="Wydawcy"/>
                 <NavigationViewItem Name="BookListMenuItem" Icon="Library" Content="Książki"/>
-                <NavigationViewItem Name="HelpMenuItem" Icon="Help" Content="Pomoc" Tapped="btPomoc_Tapped"/>
+                <NavigationViewItem Name="HelpMenuItem" Icon="Help" Content="Pomoc"/>
                 <NavigationViewItem Name="ExitMenuItem" Content="Wyjdź" Icon="Cancel" />
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <StackPanel>
-                <NavigationViewItem Name="WWWpage" Icon="World" Content="Strona WWW" Tapped="btStronaWWW_Tapped"/>
-                
+                    <NavigationViewItem Name="WWWpage" Icon="World" Content="Strona WWW" Tapped="btStronaWWW_Tapped"/>
+
                 </StackPanel>
             </NavigationView.PaneFooter>
             <Frame Name="frmMain" Margin="20,0,0,0"/>
         </NavigationView>
-        <!--<StackPanel VerticalAlignment="Top" >
-            <Button Content="Autorzy" />
-            <Button Content="POMOC" Name="btPomoc" Tapped="btPomoc_Tapped"/>
-        <Button Content="Strona WWW" Name="btStronaWWW" Tapped="btStronaWWW_Tapped" />
-        <Button Content="Ustawienia" Name="btUstawienia" Tapped="btUstawienia_Tapped"/>--> 
-        <!--</StackPanel>-->
     </Grid>
 </Page>

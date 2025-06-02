@@ -26,6 +26,6 @@
                 <tollKit:DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" />
             </tollKit:DataGrid.Columns>
         </tollKit:DataGrid>
-        
+
     </StackPanel>
 </Page>

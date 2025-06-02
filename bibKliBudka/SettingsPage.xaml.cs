@@ -54,13 +54,12 @@ namespace bibKliBudka
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(MainPage));
             Frame.GoBack();
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            if(Window.Current.Content is FrameworkElement rootElement)
+            if (Window.Current.Content is FrameworkElement rootElement)
             {
                 rootElement.RequestedTheme = ElementTheme.Light;
             }

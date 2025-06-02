@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using bibModelBudka.Model;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using System.Threading.Tasks;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -134,6 +135,66 @@ namespace bibKliBudka
                 }.ShowAsync();
             }
         }
+        public async Task<bool> CzyDanePoprawne()
+        {
+            var komunikaty = new List<string>();
+
+            foreach (var ks in BooksViewModel.BooksObservable)
+            {
+                var linia = $"ID {ks.id}:";
+                bool maBlad = false;
+
+                if (string.IsNullOrWhiteSpace(ks.tytul))
+                {
+                    linia += " brak tytułu";
+                    maBlad = true;
+                }
+
+                if (ks.ISBN.ToString().Length != 13)
+                {
+                    linia += (maBlad ? "," : "") + " ISBN musi mieć 13 cyfr";
+                    maBlad = true;
+                }
+
+                var autor = dbUWP.AuthorsLst.FirstOrDefault(a =>
+                    $"{a.nazwisko} {a.imie}".ToUpperInvariant() == (ks.NazwiskoImie ?? "").Trim().ToUpperInvariant());
+
+                if (autor == null)
+                {
+                    linia += (maBlad ? "," : "") + " autor nie istnieje";
+                    maBlad = true;
+                }
+
+                var wydawnictwo = dbUWP.PublishersLst.FirstOrDefault(w =>
+                    w.nazwa.ToUpperInvariant() == (ks.NazwaWydawnictwa ?? "").Trim().ToUpperInvariant());
+
+                if (wydawnictwo == null)
+                {
+                    linia += (maBlad ? "," : "") + " wydawnictwo nie istnieje";
+                    maBlad = true;
+                }
+
+                if (maBlad)
+                {
+                    komunikaty.Add(linia);
+                }
+            }
+
+            if (komunikaty.Any())
+            {
+                await new ContentDialog
+                {
+                    Title = "Niepoprawne dane książek",
+                    Content = string.Join("\n", komunikaty),
+                    CloseButtonText = "OK"
+                }.ShowAsync();
+
+                return false;
+            }
+
+            return true;
+        }
+
 
 
     }

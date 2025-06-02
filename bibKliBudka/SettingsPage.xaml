@@ -22,6 +22,6 @@
             <RadioButton Name="DarkRadioButton" Content="Tryb ciemny" Checked="RadioButton_Checked_1"/>
             <RadioButton Name="DefaultRadioButton" Content="Tryb systemowy"  Checked="RadioButton_Checked_2"/>
         </StackPanel>
-        
+
     </Grid>
 </Page>

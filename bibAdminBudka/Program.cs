@@ -75,12 +75,10 @@ static void PokazKsiazkiAutora(bibModelBudka.BDLibrary db)
 
     if (booksExt != null && booksExt.Count > 0)
     {
-        // Filtrowanie z użyciem operatora '=='
         var wynikDokladny = booksExt
             .Where(b => b.NazwiskoImie.Split(' ')[0].ToLower() == nazwiskoSzukane)
             .ToList();
 
-        // Filtrowanie z użyciem Contains (np. fragment nazwiska)
         var wynikZawiera = booksExt
             .Where(b => b.NazwiskoImie.ToLower().Contains(nazwiskoSzukane))
             .ToList();
@@ -110,7 +108,7 @@ static void PokazKsiazkiAutora(bibModelBudka.BDLibrary db)
             Console.WriteLine(head + "\n" + kreska);
             foreach (var item in wynikZawiera)
             {
-                
+
                 Console.WriteLine(frm, item.id, item.tytul, item.NazwiskoImie, item.NazwaWydawnictwa, item.cena);
             }
             Console.WriteLine(kreska);
@@ -128,83 +126,6 @@ static void PokazKsiazkiAutora(bibModelBudka.BDLibrary db)
 
 static void ShowData(bibModelBudka.BDLibrary db)
 {
-    /*
-    //string dane = db.ReportData();
-    //Console.WriteLine("\n=========WERSJA I==========\n");
-    //Console.WriteLine("\n\n{0}", dane);
-
-    //Autorzy
-    Console.WriteLine("\n=========WERSJA II==========\n");
-    //var authors = db.ReportData2();
-    var authors = db.ReportDataUniwersal<Autorzy>(db.authorsFile);
-    string frm = "{0,4}| {1,-20}| {2,-10}| {3,7}";
-    string head = string.Format(frm, "Id", "Nazwisko", "Imie", "Rok ur.");
-    string kreska = new string('-',head.Length);
-    Console.WriteLine(head+ "\n"+kreska);
-    foreach (var item in authors.Autor)
-    {
-        Console.WriteLine(frm, item.id, item.nazwisko, item.imie, item.rokUr);
-    }
-    Console.WriteLine(kreska);
-
-    //Wydawnictwa
-    Console.WriteLine("\n=========WERSJA II==========\n");
-    //var publishers = db.ReportData3();
-    var publishers = db.ReportDataUniwersal<Wydawcy>(db.publishersFile);
-    string frm2 = "{0,4}| {1,-25}| {2,-40}";
-    string head2 = string.Format(frm2, "Id", "Nazwa", "Strona");
-    string kreska2 = new string('-', head2.Length);
-    Console.WriteLine(head2 + "\n" + kreska2);
-    foreach (var item in publishers.Wydawca)
-    {
-        Console.WriteLine(frm2, item.id, item.nazwa, item.strona);
-    }
-    Console.WriteLine(kreska2);
-
-    //wersja 3
-    Console.WriteLine("\n=========WERSJA III==========\n");
-    var authorsSort = db.ReportDataLQ();
-    if (authorsSort != null)
-    {
-        Console.WriteLine(head + "\n" + kreska);
-        foreach (var item in authorsSort)
-        {
-            Console.WriteLine(frm, item.id, item.nazwisko, item.imie, item.rokUr);
-        }
-        Console.WriteLine(kreska);
-    }
-    else Console.WriteLine("*** BRAK DANYCH ***");
-    Console.WriteLine("\n=========WERSJA III==========\n");
-    var publishersSort = db.ReportDataLQ3();
-    if (publishersSort != null)
-    {
-        Console.WriteLine(head2 + "\n" + kreska2);
-        foreach (var item in publishersSort)
-        {
-            Console.WriteLine(frm2, item.id, item.nazwa, item.strona);
-        }
-        Console.WriteLine(kreska2);
-    }
-    else Console.WriteLine("*** BRAK DANYCH ***");
-    Console.WriteLine("\n=========WERSJA III==========\n");
-    var booksExt = db.ReportDataLQ2();
-    if (booksExt != null && booksExt.Count > 0)
-    {
-        string frm3 = "{0,4}| {1,-30}| {2,-30}| {3,-25}| {4,7}";
-        string head3 = string.Format(frm3, "Id", "Tytuł", "Autor", "Wydawnictwo", "Cena");
-        string kreska3 = new string('-', head3.Length);
-        Console.WriteLine(head3 + "\n" + kreska3);
-        foreach (var item in booksExt)
-        {
-            Console.WriteLine(frm3, item.id, item.tytul, item.NazwiskoImie, item.NazwaWydawnictwa, item.cena);
-        }
-        Console.WriteLine(kreska3);
-    }
-    else
-    {
-        Console.WriteLine("*** BRAK DANYCH O KSIĄŻKACH ***");
-    }
-    */
     PokazAutorow(db);
     PokazWydawnictwa(db);
     PokazKsiazki(db);
@@ -256,5 +177,3 @@ while (true)
     Console.WriteLine("\nNaciśnij dowolny przycisk, żeby wrócić do menu");
     Console.ReadKey();
 }
-
-//
