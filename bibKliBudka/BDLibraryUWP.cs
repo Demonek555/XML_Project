@@ -183,6 +183,9 @@ namespace bibKliBudka
 
         public async void Save<TContainer, TBase>(List<TBase> dataList, string fileName, Func<TBase[], TContainer> containerFactory)
         {
+            if (dataList == null || dataList.Count == 0)
+                return;
+
             var xs = new XmlSerializer(typeof(TContainer));
             try
             {
@@ -204,6 +207,7 @@ namespace bibKliBudka
                 await dlg.ShowAsync();
             }
         }
+
         internal void SaveAuthors()
         {
             Save<Autorzy, AutorzyAutor>(AuthorsLst, authorsFile, data => new Autorzy { Autor = data });
@@ -211,19 +215,13 @@ namespace bibKliBudka
 
         internal void SavePublishers()
         {
-            Save<Wydawcy, WydawcyWydawca>(
-                PublishersLst,
-                publishersFile,
-                data => new Wydawcy { Wydawca = data }
-            );
+            Save<Wydawcy, WydawcyWydawca>(PublishersLst, publishersFile, data => new Wydawcy { Wydawca = data });
         }
-
 
         internal void SaveBooks()
         {
             Save<Ksiazki, KsiazkiKsiazka>(BooksLst, booksFile, data => new Ksiazki { Ksiazka = data });
         }
-
 
     }
 }

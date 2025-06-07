@@ -73,6 +73,10 @@ namespace bibKliBudka
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+                // Przełącz na tryb pełnoekranowy
+                var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+                view.TryEnterFullScreenMode();
+
             }
         }
 

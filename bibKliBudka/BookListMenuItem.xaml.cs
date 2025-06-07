@@ -57,8 +57,14 @@ namespace bibKliBudka
                 BooksObservable = new ObservableCollection<KsiazkiKsiazkaExt>(rozszerzone)
             };
         }
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            if (!await CzyDanePoprawne())
+            {
+                e.Cancel = true;
+                return;
+            }
+
             dbUWP.BooksLst = BooksViewModel.BooksObservable
                 .Select(b =>
                 {
@@ -82,6 +88,7 @@ namespace bibKliBudka
             dbUWP.SaveBooks();
             base.OnNavigatingFrom(e);
         }
+
 
 
 

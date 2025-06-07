@@ -44,12 +44,19 @@ namespace bibKliBudka
             };
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            if (!await CzyDanePoprawne())
+            {
+                e.Cancel = true; 
+                return;
+            }
+
             dbUWP.PublishersLst = PublishersViewModel.PublishersObservable.ToList();
             dbUWP.SavePublishers();
             base.OnNavigatingFrom(e);
         }
+
         private void DodajPublisher_Click(object sender, RoutedEventArgs e)
         {
             int nextId = PublishersViewModel.PublishersObservable.Count > 0
